@@ -425,13 +425,21 @@ def run_bench(args):
     scaler = torch.amp.GradScaler('cuda', enabled=(args.mode == "ddp"))
 
     # 3. Data
-    dataset = FakeDataset(size=500*args.batch_size, seq_len=args.seq_len)
-    if args.mode == "tp":
-        sampler = torch.utils.data.SequentialSampler(dataset)
+    if args.use_static_batch:
+        if rank == 0: print(f">> STATIC BATCH MODE: Generating {local_batch_size}x{args.seq_len} on GPU to bypass CPU...")
+        # Generate ONCE on GPU
+        static_input = torch.randint(0, VOCAB, (local_batch_size, args.seq_len), device=device)
+        static_target = torch.randint(0, VOCAB, (local_batch_size, args.seq_len), device=device)
+        # Create a dummy loader that just yields None (to keep loop structure)
+        loader = [None] * (args.batch_size * 500) # Mock length
     else:
-        sampler = DistributedSampler(dataset)
+        dataset = FakeDataset(size=500*args.batch_size, seq_len=args.seq_len)
+        if args.mode == "tp":
+            sampler = torch.utils.data.SequentialSampler(dataset)
+        else:
+            sampler = DistributedSampler(dataset)
 
-    loader = DataLoader(dataset, batch_size=local_batch_size, sampler=sampler)
+        loader = DataLoader(dataset, batch_size=local_batch_size, sampler=sampler)
 
     # 4. Training Step Helper
     def train_step(input_ids, targets):
@@ -480,7 +488,10 @@ def run_bench(args):
     if rank == 0: print("Warming up...")
     for i, (inputs, targets) in enumerate(loader):
         if i >= 5: break
-        inputs, targets = inputs.to(device), targets.to(device)
+        if inputs is None:
+            inputs, targets = static_inputs, static_targets
+        else:
+            inputs, targets = inputs.to(device), targets.to(device)
         train_step(inputs, targets)
 
     dist.barrier()
@@ -496,7 +507,10 @@ def run_bench(args):
     try:
         for i, (inputs, targets) in enumerate(loader):
             if i >= args.steps: break
-            inputs, targets = inputs.to(device), targets.to(device)
+            if inputs is None:
+                inputs, targets = static_inputs, static_targets
+            else:
+                inputs, targets = inputs.to(device), targets.to(device)
             
             train_step(inputs, targets)
 
@@ -556,5 +570,6 @@ if __name__ == "__main__":
     parser.add_argument("--seq_len", type=int, default=256)
     parser.add_argument("--steps", type=int, default=20)
     parser.add_argument("--limit_vram_gb", type=float, default=0, help="Simulate V100 by capping memory (e.g. 31.0)")
+    parser.add_argument("--use_static_batch", action="store_true", help="Use pre-allocated GPU data to bypass CPU bottleneck")
     args = parser.parse_args()
     run_bench(args) 
