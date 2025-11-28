@@ -538,7 +538,7 @@ def run_bench(args):
             avg_bw = (data_per_step * steps) / duration / 1e9
 
             print(f"--- RESULTS ({args.mode}) ---")
-            print(f"Throughput: {tps:,.2f} tokens/sec")
+            print(f"Throughput: {tps:.2f} tokens/sec")
             print(f"Latency: {latency_ms:.2f} ms/step")
             print(f"Peak VRAM: {peak_mem_gb:.2f} GB")
             print(f"Est. Interconnect BW: {avg_bw:.2f} GB/s ({bw_type})")
