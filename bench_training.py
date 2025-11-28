@@ -489,7 +489,7 @@ def run_bench(args):
     for i, (inputs, targets) in enumerate(loader):
         if i >= 5: break
         if inputs is None:
-            inputs, targets = static_inputs, static_targets
+            inputs, targets = static_input, static_target
         else:
             inputs, targets = inputs.to(device), targets.to(device)
         train_step(inputs, targets)
@@ -508,7 +508,7 @@ def run_bench(args):
         for i, (inputs, targets) in enumerate(loader):
             if i >= args.steps: break
             if inputs is None:
-                inputs, targets = static_inputs, static_targets
+                inputs, targets = static_input, static_target
             else:
                 inputs, targets = inputs.to(device), targets.to(device)
             
