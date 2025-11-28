@@ -431,7 +431,7 @@ def run_bench(args):
         static_input = torch.randint(0, VOCAB, (local_batch_size, args.seq_len), device=device)
         static_target = torch.randint(0, VOCAB, (local_batch_size, args.seq_len), device=device)
         # Create a dummy loader that just yields None (to keep loop structure)
-        loader = [None] * (args.batch_size * 500) # Mock length
+        loader = [(None,None)] * (args.batch_size * 500) # Mock length
     else:
         dataset = FakeDataset(size=500*args.batch_size, seq_len=args.seq_len)
         if args.mode == "tp":
