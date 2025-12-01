@@ -20,6 +20,8 @@ fi
 # We use the Unsloth variant to avoid the Meta gate mechanism.
 # It is architecturally identical to Llama-3.1-8B.
 MODEL="unsloth/Meta-Llama-3.1-8B-Instruct"
+#MODEL="hugging-quants/Meta-Llama-3.1-70B-Instruct-AWQ-INT4"
+
 
 echo "------------------------------------------------"
 echo "Running Bench: TP=$TP | Batch=$BS | P2P=$USE_P2P"
