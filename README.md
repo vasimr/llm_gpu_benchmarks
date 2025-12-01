@@ -87,7 +87,7 @@ Default model configuration: **2.5 B parameters**, batch size **16**, sequence l
 
 ```
 
-pip install vllm transformers accelerate datasets fairscale
+pip install vllm transformers accelerate datasets fairscale git+https://github.com/huggingface/diffusers
 
 ```
 
