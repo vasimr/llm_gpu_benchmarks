@@ -153,6 +153,7 @@
       <div class="control-group" id="ctrl-train-gpu"></div>
       <div class="control-group" id="ctrl-train-mode"></div>
       <div class="control-group" id="ctrl-train-batch"></div>
+	  <div class="control-group" id="ctrl-train-batch-per-gpu"></div>
       <div class="control-group" id="ctrl-train-seq"></div>
       <div class="control-group" id="ctrl-train-p2p"></div>
     </div>
@@ -219,7 +220,28 @@ v100_sxm2x4,2,32,NO,4.07,3126.18,1042.06
 v100_sxm2x4,4,1,YES,7.97,6122.39,2040.80
 v100_sxm2x4,4,1,NO,3.54,2716.82,905.61
 v100_sxm2x4,4,32,YES,9.49,7285.59,2428.53
-v100_sxm2x4,4,32,NO,3.54,2719.68,906.56`;
+v100_sxm2x4,4,32,NO,3.54,2719.68,906.56
+v100_sxm2x8,1,1,YES,2.32,1778.58,592.86
+v100_sxm2x8,1,32,YES,2.44,1877.50,625.83
+v100_sxm2x8_topo,2,1,YES,4.94,3797.61,1265.87
+v100_sxm2x8_topo,2,1,NO,4.06,3116.22,1038.74
+v100_sxm2x8_topo,2,32,YES,5.38,4130.24,1376.75
+v100_sxm2x8_topo,2,32,NO,4.06,3114.41,1038.14
+v100_sxm2x8,2,1,YES,5.72,4393.39,1464.46
+v100_sxm2x8,2,1,NO,4.77,3663.51,1221.17
+v100_sxm2x8,2,32,YES,5.73,4403.81,1467.94
+v100_sxm2x8,2,32,NO,4.77,3663.60,1221.20
+v100_sxm2x8,4,1,YES,8.19,6291.74,2097.25
+v100_sxm2x8,4,1,NO,5.08,3900.92,1300.31
+v100_sxm2x8,4,32,YES,9.48,7283.35,2427.78
+v100_sxm2x8,4,32,NO,5.09,3906.09,1302.03
+v100_sxm2x8,8,1,YES,11.10,8524.80,2841.60
+v100_sxm2x8,8,1,NO,4.54,3488.41,1162.80
+v100_sxm2x8,8,32,YES,13.67,10495.90,3498.63
+v100_sxm2x8,8,32,NO,4.54,3484.80,1161.60
+rtx5000_pro,1,1,DEFAULT,7.86,9056.67,1006.30
+rtx5000_pro,1,32,DEFAULT,7.80,8985.16,998.35
+rtx5000_pro,1,64,DEFAULT,7.78,8956.89,995.21`;
 const CSV_70B = `GPU,TP,Batch,P2P_Enabled,Req_per_Sec,Tokens_per_Sec,Output_Tokens_per_Sec
 a6000_80,1,1,YES,0.50,385.75,128.58
 a6000_80,1,32,YES,0.50,385.72,128.57
@@ -254,7 +276,28 @@ v100_sxm2x4_70,2,32,NO,0.44,337.53,112.51
 v100_sxm2x4_70,4,1,YES,1.53,1171.69,390.56
 v100_sxm2x4_70,4,1,NO,0.70,540.11,180.04
 v100_sxm2x4_70,4,32,YES,1.56,1199.75,399.92
-v100_sxm2x4_70,4,32,NO,0.70,540.12,180.04`;
+v100_sxm2x4_70,4,32,NO,0.70,540.12,180.04
+v100_sxm2x8_70,1,1,YES,0,0,0
+v100_sxm2x8_70,1,32,YES,0,0,0
+v100_sxm2x8_70,2,1,YES,0.53,405.10,135.03
+v100_sxm2x8_70,2,1,NO,0.48,368.08,122.69
+v100_sxm2x8_70,2,32,YES,0.53,408.43,136.14
+v100_sxm2x8_70,2,32,NO,0.48,368.10,122.70
+v100_sxm2x8_70_topo,2,1,YES,0.51,395.42,131.81
+v100_sxm2x8_70_topo,2,1,NO,0.44,334.74,111.58
+v100_sxm2x8_70_topo,2,32,YES,0.51,395.05,131.68
+v100_sxm2x8_70_topo,2,32,NO,0.44,334.80,111.60
+v100_sxm2x8_70,4,1,YES,1.50,1155.11,385.04
+v100_sxm2x8_70,4,1,NO,0.95,732.12,244.04
+v100_sx2xm8_70,4,32,YES,1.54,1183.65,394.55
+v100_sx2xm8_70,4,32,NO,0.95,732.00,244.00
+v100_sx2xm8_70,8,1,YES,2.55,1961.59,653.86
+v100_sx2xm8_70,8,1,NO,0.95,731.78,243.93
+v100_sx2xm8_70,8,32,YES,2.67,2047.58,682.53
+v100_sx2xm8_70,8,32,NO,0.95,731.11,243.70
+rtx5000_pro,1,1,DEFAULT,0.82,948.26,105.36
+rtx5000_pro,1,32,DEFAULT,0.82,944.67,104.96
+rtx5000_pro,1,64,DEFAULT,0.82,944.56,104.95`;
 const CSV_TRAIN = `GPU,Mode,Num_GPUs,Global_Batch,Seq_Len,P2P_Enabled,Throughput,Latency,Peak_VRAM,BW_Est
 a6000,ddp,1,16,256,YES,5968.37,686.28,26.46,14.87
 a6000,ddp,2,16,256,YES,9903.18,413.60,24.39,24.67
@@ -433,20 +476,106 @@ v100_sxm2x4,tp,4,16,1024,NO,4095.96,1000.01,8.56,3.22
 v100_sxm2x4,tp,4,16,2048,YES,15672.58,522.70,20.24,12.33
 v100_sxm2x4,tp,4,16,2048,NO,4008.17,2043.83,20.24,3.15
 v100_sxm2x4,tp,4,16,4096,YES,OOM/Fail,,,
-v100_sxm2x4,tp,4,16,4096,NO,OOM/Fail,,,`;
+v100_sxm2x4,tp,4,16,4096,NO,OOM/Fail,,,
+v100_sxm2x8,ddp,1,16,256,YES,4762.23,860.10,26.46,11.86
+v100_sxm2x8_topo,ddp,2,16,256,YES,6805.47,601.87,24.39,16.95
+v100_sxm2x8_topo,ddp,2,16,256,NO,2561.83,1598.86,24.39,6.38
+v100_sxm2x8_topo,fsdp,2,16,256,YES,6304.23,649.72,14.99,23.55
+v100_sxm2x8_topo,fsdp,2,16,256,NO,1775.05,2307.55,14.99,6.63
+v100_sxm2x8_topo,tp,2,16,256,YES,9027.05,226.87,9.94,3.55
+v100_sxm2x8_topo,tp,2,16,256,NO,5705.84,358.93,9.94,2.24
+v100_sxm2x8_topo,ddp,2,32,256,YES,8603.02,952.22,26.46,10.71
+v100_sxm2x8_topo,ddp,2,32,256,NO,4454.12,1839.20,26.46,5.55
+v100_sxm2x8_topo,fsdp,2,32,256,YES,8501.42,963.60,16.27,15.88
+v100_sxm2x8_topo,fsdp,2,32,256,NO,3479.52,2354.35,16.27,6.50
+v100_sxm2x8_topo,tp,2,32,256,YES,9682.97,423.01,11.11,3.81
+v100_sxm2x8_topo,tp,2,32,256,NO,5967.27,686.41,11.11,2.35
+v100_sxm2x8,ddp,2,16,256,YES,7974.71,513.62,24.39,19.86
+v100_sxm2x8,ddp,2,16,256,NO,3901.48,1049.86,24.39,9.72
+v100_sxm2x8,fsdp,2,16,256,YES,8084.56,506.64,14.99,30.20
+v100_sxm2x8,fsdp,2,16,256,NO,2948.84,1389.02,14.99,11.02
+v100_sxm2x8,tp,2,16,256,YES,9763.97,209.75,9.94,3.84
+v100_sxm2x8,tp,2,16,256,NO,7132.91,287.12,9.94,2.80
+v100_sxm2x8,ddp,2,32,256,YES,8961.64,914.12,26.46,11.16
+v100_sxm2x8,ddp,2,32,256,NO,6217.23,1317.63,26.46,7.74
+v100_sxm2x8,fsdp,2,32,256,YES,9298.29,881.02,16.27,17.37
+v100_sxm2x8,fsdp,2,32,256,NO,5492.90,1491.38,16.27,10.26
+v100_sxm2x8,tp,2,32,256,YES,10589.70,386.79,11.11,4.16
+v100_sxm2x8,tp,2,32,256,NO,7549.52,542.55,11.11,2.97
+v100_sxm2x8,ddp,4,16,256,YES,11758.44,348.35,23.83,29.29
+v100_sxm2x8,ddp,4,16,256,NO,2237.07,1830.97,23.83,5.57
+v100_sxm2x8,fsdp,4,16,256,YES,13164.21,311.15,10.69,49.18
+v100_sxm2x8,fsdp,4,16,256,NO,1486.43,2755.60,10.69,5.55
+v100_sxm2x8,tp,4,16,256,YES,15046.32,68.06,4.84,11.83
+v100_sxm2x8,tp,4,16,256,NO,6142.71,166.70,4.84,4.83
+v100_sxm2x8,ddp,4,64,256,YES,17530.33,934.61,26.46,10.92
+v100_sxm2x8,ddp,4,64,256,NO,7532.89,2174.99,26.46,4.69
+v100_sxm2x8,fsdp,4,64,256,YES,20116.95,814.44,12.71,18.79
+v100_sxm2x8,fsdp,4,64,256,NO,5803.77,2822.99,12.71,5.42
+v100_sxm2x8,tp,4,64,256,YES,19482.17,210.24,5.94,15.32
+v100_sxm2x8,tp,4,64,256,NO,6759.13,606.00,5.94,5.32
+v100_sxm2x8,ddp,8,16,256,YES,15032.79,272.47,23.79,37.44
+v100_sxm2x8,ddp,8,16,256,NO,2091.47,1958.43,23.79,5.21
+v100_sxm2x8,fsdp,8,16,256,YES,18221.40,224.79,8.54,68.08
+v100_sxm2x8,fsdp,8,16,256,NO,1433.02,2858.29,8.54,5.35
+v100_sxm2x8,tp,8,16,256,YES,17119.69,29.91,2.42,26.93
+v100_sxm2x8,tp,8,16,256,NO,6363.77,80.46,2.42,10.01
+v100_sxm2x8,ddp,8,128,256,YES,35545.52,921.86,26.46,11.07
+v100_sxm2x8,ddp,8,128,256,NO,13980.46,2343.84,26.46,4.35
+v100_sxm2x8,fsdp,8,128,256,YES,40269.67,813.71,10.92,18.81
+v100_sxm2x8,fsdp,8,128,256,NO,11192.13,2927.77,10.92,5.23
+v100_sxm2x8,tp,8,128,256,YES,33711.28,121.50,3.42,53.02
+v100_sxm2x8,tp,8,128,256,NO,7223.76,567.02,3.42,11.36
+v100_sxm2x8,ddp,8,64,256,YES,30261.59,541.41,24.39,18.84
+v100_sxm2x8,ddp,8,64,256,NO,7817.54,2095.80,24.39,4.87
+v100_sxm2x8,fsdp,8,64,256,YES,34369.86,476.70,9.55,32.10
+v100_sxm2x8,fsdp,8,64,256,NO,5683.03,2882.97,9.55,5.31
+v100_sxm2x8,tp,8,64,256,YES,30488.78,67.17,2.67,47.95
+v100_sxm2x8,tp,8,64,256,NO,7081.48,289.21,2.67,11.14
+v100_sxm2x8,ddp,8,128,256,YES,35571.09,921.20,26.46,11.07
+v100_sxm2x8,ddp,8,128,256,NO,13794.22,2375.49,26.46,4.29
+v100_sxm2x8,fsdp,8,128,256,YES,40628.07,806.54,10.92,18.97
+v100_sxm2x8,fsdp,8,128,256,NO,11196.46,2926.64,10.92,5.23
+v100_sxm2x8,tp,8,128,256,YES,33732.74,121.43,3.42,53.06
+v100_sxm2x8,tp,8,128,256,NO,7226.80,566.78,3.42,11.37
+v100_sxm2x8,ddp,8,256,256,YES,OOM/Fail,,,
+v100_sxm2x8,ddp,8,256,256,NO,OOM/Fail,,,
+v100_sxm2x8,fsdp,8,256,256,YES,42903.27,1527.53,14.55,10.02
+v100_sxm2x8,fsdp,8,256,256,NO,21579.27,3036.99,14.55,5.04
+v100_sxm2x8,tp,8,256,256,YES,35439.62,231.15,5.05,55.74
+v100_sxm2x8,tp,8,256,256,NO,7291.63,1123.48,5.05,11.47
+v100_sxm2x8,tp,8,16,1024,YES,27314.77,74.98,3.31,42.96
+v100_sxm2x8,tp,8,16,1024,NO,6900.74,296.78,3.31,10.85
+v100_sxm2x8,tp,8,16,2048,YES,26125.53,156.78,6.42,41.09
+v100_sxm2x8,tp,8,16,2048,NO,6803.16,602.07,6.42,10.70
+v100_sxm2x8,tp,8,16,4096,YES,21505.59,380.92,17.88,33.83
+v100_sxm2x8,tp,8,16,4096,NO,6435.30,1272.98,17.88,10.12
+rtx5000_pro,ddp,1,16,256,YES,9774.00,419.07,26.46,24.34`;
 const CSV_DIFF = `GPU,sdxl_speed,z-image_speed
 a6000,4.2,1.08
 v100_sxm,3.208,0.944
 rtx6000S,10.666,3.038
-a100_80_sxm,8.042,2.164`;
+a100_80_sxm,8.042,2.164
+rtx5000_pro,7.428,2.039`;
 
 // --- CONFIGURATION & UTILS ---
 
 const GPU_NAMES = {
-  'v100_sxm2x4': 'V100', 'v100_sxm2x4_70': 'V100', 'v100_sxm': 'V100',
-  'a100_80_sxm4x8': 'A100', 'a100_80_sxm4x8_70': 'A100', 'a100_80_sxm': 'A100',
-  'a6000': 'A6000', 'a6000_80': 'A6000',
-  'rtx6000S': 'RTX 6000 Server', 'rtx6000S_80': 'RTX 6000 Ada'
+  'v100_sxm2x4': 'V100 SXMx4', 
+  'v100_sxm2x4_70': 'V100 SXMx4', 
+  'v100_sxm2x8': 'V100 SXMx8', 
+  'v100_sxm2x8_70': 'V100 SXMx8', 
+  'v100_sxm2x8_70_topo': 'V100 SXMx8 (bad Topo)', 
+  'v100_sxm2x8_topo': 'V100 SXMx8 (bad Topo)', 
+  'v100_sxm': 'V100 SXM',
+  'a100_80_sxm4x8': 'A100', 
+  'a100_80_sxm4x8_70': 'A100', 
+  'a100_80_sxm': 'A100',
+  'a6000': 'A6000', 
+  'a6000_80': 'A6000',
+  'rtx6000S': 'RTX 6000S', 
+  'rtx6000S_80': 'RTX 6000S',
+  'rtx5000_pro': 'RTX 5000 PRO'
 };
 
 // New Color Palette
@@ -587,7 +716,7 @@ function createMultiSelect(id, label, options, defaultVals, onChange) {
 
 let get8bGPU, get8bBatch, get8bP2P;
 let get70bGPU, get70bBatch, get70bP2P;
-let getTrainGPU, getTrainMode, getTrainBatch, getTrainSeq, getTrainP2P;
+let getTrainGPU, getTrainMode, getTrainBatch, getTrainBatchPerGPU, getTrainSeq, getTrainP2P;
 let getDiffGPU, getDiffModel;
 
 function init() {
@@ -615,6 +744,7 @@ function init() {
   getTrainGPU = createMultiSelect('ctrl-train-gpu', 'GPU Model', gpusTrain, gpusTrain, updateTrain);
   getTrainMode = createMultiSelect('ctrl-train-mode', 'Parallel Mode', modesTrain, modesTrain, updateTrain);
   getTrainBatch = createMultiSelect('ctrl-train-batch', 'Global Batch', batchTrain, batchTrain, updateTrain);
+  getTrainBatchPerGPU = createMultiSelect('ctrl-train-batch-per-gpu', 'Batch / GPU', ['all', '16'], ['all'], updateTrain);
   getTrainSeq = createMultiSelect('ctrl-train-seq', 'Seq Length', seqTrain, seqTrain, updateTrain);
   getTrainP2P = createMultiSelect('ctrl-train-p2p', 'NVLink State', ['Enabled', 'Disabled'], ['Enabled', 'Disabled'], updateTrain);
   document.getElementById('metric-train').addEventListener('change', updateTrain);
@@ -895,6 +1025,8 @@ function updateTrain() {
   const gpu = getTrainGPU();
   const mode = getTrainMode();
   const batch = getTrainBatch();
+  const batchPerGpu = getTrainBatchPerGPU ? getTrainBatchPerGPU() : ['all'];
+  const filterBatchPerGpu16 = batchPerGpu.includes('16') && !batchPerGpu.includes('all');
   const seq = getTrainSeq();
   const p2p = getTrainP2P();
   const metric = document.getElementById('metric-train').value;
@@ -903,7 +1035,14 @@ function updateTrain() {
     if(!gpu.includes(d.GPU)) return false;
     if(!batch.includes(String(d.Global_Batch))) return false;
     if(!seq.includes(String(d.Seq_Len))) return false;
-    // Keep TP1 baseline if filters allow, else strict mode/p2p
+    
+	// optional Batch/GPU filter (Global_Batch / Num_GPUs = 16)
+	if (filterBatchPerGpu16) {
+      const perGpuBatch = Number(d.Global_Batch) / Number(d.Num_GPUs || 1);
+      if (perGpuBatch !== 16) return false;
+    }
+	
+	// Keep TP1 baseline if filters allow, else strict mode/p2p
     const isBaseline = d.Num_GPUs === 1;
     if (isBaseline) return true;
     if(!mode.includes(d.Mode)) return false;
